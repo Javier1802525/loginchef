@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recetario</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="ejemplos.js"></script>
+    <style>
+        *{
+            background-color: (#DDD0C8)
+        }
+        body {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding-top: 50px;
+        }
+        .hidden {
+            display: none;
+        }
+        .logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        .logo img {
+            width: 100px; 
+            height: auto; 
+        }
+        .form-container {
+            width: 100%;
+        }
+        .card-img {
+            object-fit: cover;
+            height: 100%;
+        }
+        h1, h2, h3, p{
+            color: (#323232);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="logo">
+        <img src="logo.png.png" alt="Logo" width="50">
+    </div>
+
+    <div class="container">
+        <div id="loginForm" class="form-container">
+            <h2 class="text-center">Iniciar Sesión</h2>
+            <form onsubmit="return login()">
+                <div class="form-group">
+                    <label for="loginUsername">Usuario:</label>
+                    <input type="text" class="form-control" id="loginUsername" name="loginUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Contraseña:</label>
+                    <input type="password" class="form-control" id="loginPassword" name="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+            </form>
+            <button class="btn btn-link btn-block" onclick="showRegisterForm()">Crear Cuenta</button>
+        </div>
+        <div id="registerForm" class="form-container hidden">
+            <h2 class="text-center">Crear Cuenta</h2>
+            <form onsubmit="return register()">
+                <div class="form-group">
+                    <label for="firstName">Nombre:</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Apellido:</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Número de Celular:</label>
+                    <input type="text" class="form-control" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="birthdate">Fecha de Nacimiento:</label>
+                    <input type="date" class="form-control" id="birthdate" name="birthdate" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Crear Contraseña:</label>
+                    <input type="password" class="form-control" id="registerPassword" name="registerPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+            </form>
+            <button class="btn btn-link btn-block" onclick="showLoginForm()">Volver al Inicio de Sesión</button>
+        </div>
+    </div>
+
+    <div class="container hidden" id="mainContent">
+        <div class="container mt-5">
+            <div class="card">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="chef.jpg" class="card-img" alt="Foto del Chef">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Chef Juan Pérez</h5>
+                            <p class="card-text"><strong>Edad:</strong> 45 años</p>
+                            <p class="card-text"><strong>Especialidad:</strong> Cocina Francesa</p>
+                            <p class="card-text"><strong>Experiencia:</strong> 20 años</p>
+                            <p class="card-text"><strong>Restaurante:</strong> Le Gourmet</p>
+                            <p class="card-text"><small class="text-muted">Juan ha trabajado en algunos de los mejores restaurantes del mundo y es conocido por su habilidad para crear platos innovadores y deliciosos.</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h1 class="mt-5 mb-4">Buscar Receta</h1>
+        <div class="form-group">
+            <input type="text" class="form-control mb-2" id="nombre" placeholder="Nombre del platillo">
+            <button class="btn btn-primary mb-2" onclick="buscar()">Buscar</button>
+        </div>
+
+        <h2 id="title"></h2>
+        <img id="foto" src="" alt="Foto del platillo" style="display:none; width:300px;" class="img-fluid rounded mb-3">
+        <h3 id="ingredientes-title"></h3>
+        <ul id="ingredientes" class="list-group mb-3"></ul>
+        <h3 id="preparacion-title"></h3>
+        <div id="preparacion"></div>
+    </div>
+
+        <script>
+            let recetario = [
+                {
+                    nombre: "Sajta",
+                    categoria: "Boliviana",
+                    ingredientes: ["Pollo", "Papa", "Cebolla", "Tomate", "Pimiento amarillo", "Ajo", "Comino", "Caldo de pollo"],
+                    preparacion: "Cocinar el pollo con las verduras y especias. Servir acompañado de papas y arroz. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                    foto: "sajta.jpg"
+                },
+                {
+                    nombre: "Charque",
+                    categoria: "Boliviana",
+                    ingredientes: ["Carne de res", "Sal", "Comino", "Ajo", "Pimienta"],
+                    preparacion: "Cocinar la carne de res desmenuzada con sal y especias. Servir acompañado de mote y llajwa. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                    foto: "charque.jpg"
+                },
+                {
+                    nombre: "Sonso",
+                    categoria: "Boliviana",
+                    ingredientes: ["Queso", "Yuca"],
+                    preparacion: "Cocinar la yuca, triturarla y mezclar con queso. Formar bolas y freír.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                    foto: "sonso.jpg"
+                },
+                {
+                    nombre: "Chairo",
+                    categoria: "Boliviana",
+                    ingredientes: ["Carne de res", "Papas", "Chuño", "Habas", "Zanahoria", "Repollo", "Cebolla", "Ajo", "Comino"],
+                    preparacion: "Cocinar la carne y las verduras en una olla. Añadir chuño y cocinar hasta espesar. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                    foto: "chairo.jpg"
+                },
+                {
+                    nombre: "Chicharron",
+                    categoria: "Boliviana",
+                    ingredientes: ["Cerdo", "Sal", "Comino", "Ajo", "Orégano", "Pimienta", "Aceite"],
+                    preparacion: "Freír la carne de cerdo hasta que esté dorada y crujiente. Servir caliente. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                    foto: "chicharron.jpg"
+                },
+                {
+                    nombre: "Fricase",
+                    categoria: "Boliviana",
+                    ingredientes: ["Pollo", "Papas", "Arvejas", "Cebolla", "Ajo", "Comino", "Ají amarillo", "Caldo de pollo"],
+                    preparacion: "Cocinar el pollo con las papas, arvejas y especias. Servir caliente. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                    foto: "fricase.jpg"
+                },
+                {
+                    nombre: "Milanesa",
+                    categoria: "Argentina",
+                    ingredientes: ["Filete de carne", "Huevo", "Pan rallado", "Sal", "Aceite"],
+                    preparacion: "Pasar el filete de carne por huevo batido y pan rallado, luego freír en aceite caliente hasta dorar. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                    foto: "milanesa.jpg"
+                },
+                {
+                    nombre: "Asado",
+                    categoria: "Argentina",
+                    ingredientes: ["Carne de res", "Chorizos", "Morcillas", "Costillas de cerdo", "Sal"],
+                    preparacion: "Asar las carnes a la parrilla con sal y servir caliente. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                    foto: "asado.jpg"
+                },
+                {
+                    nombre: "Pique Macho",
+                    categoria: "Boliviana",
+                    ingredientes: ["Carne de res", "Salchicha", "Papa frita", "Tomate", "Locoto", "Cebolla", "Aceitunas", "Huevo frito", "Salsa"],
+                    preparacion: "Freír la carne, la salchicha y las papas. Servir en un plato con tomate, locoto, cebolla, aceitunas, huevo frito y salsa. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                    foto: "pique.jpg"
+                },
+                {
+                    nombre: "Silpancho",
+                    categoria: "Boliviana",
+                    ingredientes: ["Carne de res", "Huevo", "Papas fritas", "Arroz", "Tomate", "Locoto", "Cebolla", "Perejil", "Limón"],
+                    preparacion: "Aplanar la carne, empanizar y freír. Servir sobre una base de arroz con papas fritas, tomate, locoto, cebolla, perejil y limón.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                    foto: "silpancho.jpg"
+                }
+            ];
+
+            function buscar() {
+                const name = document.getElementById('nombre').value.trim().toLowerCase();
+                let platilloEncontrado = null;
+
+                for (let i = 0; i < recetario.length; i++) {
+                    if (recetario[i].nombre.toLowerCase() === name) {
+                        platilloEncontrado = recetario[i];
+                        break;
+                    }
+                }
+
+                if (platilloEncontrado) {
+                    document.getElementById('title').innerText = "Platillo: " + platilloEncontrado.nombre;
+                    document.getElementById('foto').src = platilloEncontrado.foto;
+                    document.getElementById('foto').style.display = 'block';
+
+                    document.getElementById('ingredientes-title').innerText = "Ingredientes";
+                    const ingredientesLista = document.getElementById('ingredientes');
+                    ingredientesLista.innerHTML = ""; // Limpiar resultados anteriores
+                    const ulIngredientes = document.createElement('ul');
+                    for (let i = 0; i < platilloEncontrado.ingredientes.length; i++) {
+                        const li = document.createElement('li');
+                        li.textContent = platilloEncontrado.ingredientes[i];
+                        ulIngredientes.appendChild(li);
+                    }
+                    ingredientesLista.appendChild(ulIngredientes);
+
+                    document.getElementById('preparacion-title').innerText = "Preparación";
+                    document.getElementById('preparacion').innerText = platilloEncontrado.preparacion;
+                } else {
+                    document.getElementById('title').innerText = "Platillo no encontrado";
+                    document.getElementById('foto').style.display = 'none';
+                    document.getElementById('ingredientes-title').innerText = "";
+                    document.getElementById('ingredientes').innerHTML = "";
+                    document.getElementById('preparacion-title').innerText = "";
+                    document.getElementById('preparacion').innerText = "";
+                }
+            }
+        </script>
+    </body>
+
+</html>
